@@ -644,7 +644,7 @@ end
             close(err.in)
             let s = read(err, String)
                 @test occursin("ERROR: could not load library \"$nonexist_image\"\n", s)
-                @test_broken !occursin("Segmentation fault", s)
+                @test !occursin("Segmentation fault", s)
                 @test !occursin("EXCEPTION_ACCESS_VIOLATION", s)
             end
             @test !success(p)
@@ -656,7 +656,7 @@ end
         p = run(pipeline(`$exename --sysimage=$libjulia`, stderr=err), wait=false)
         close(err.in)
         let s = read(err, String)
-            @test_broken s == "ERROR: System image file failed consistency check: maybe opened the wrong version?\n"
+            @test s == "ERROR: System image file failed consistency check: maybe opened the wrong version?\n"
         end
         @test !success(p)
         @test_broken !Base.process_signaled(p)
